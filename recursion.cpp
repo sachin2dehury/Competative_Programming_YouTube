@@ -240,7 +240,7 @@ int josephusProblem(int n,int k) {
 	return (josephusProblem(n-1,k)+k-1)%n+ 1;
 }
 
-int main() {
+int main(int argc, char const *argv[]) {
 	
 	vector<int> v = {4,3,2,1};
 	// sortArray(v);
@@ -304,4 +304,6 @@ int main() {
 	// printBinaryNoPrefix(5);
 
 	// cout<<josephusProblem(5,2);
+
+	return 0;
 }
