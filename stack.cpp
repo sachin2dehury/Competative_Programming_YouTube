@@ -302,6 +302,7 @@ public:
 		else {
 			s.push(value);
 		}
+		cout<<s.top()<<endl;
 	}
 	void pop() {
 		if(s.size()>0 && k>s.top()) {
