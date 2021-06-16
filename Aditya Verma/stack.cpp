@@ -139,17 +139,17 @@ int maximumAreaHistogram(vector<int> &v) {
 
 	for(int i=v.size()-1;i>=0;i--) {
 		if(s.size()==0){
-			ans[i]=v.size()+1;
+			ans[i]=v.size();
 		}
 		else if(v[s.top()]<v[i]){
 			ans[i]= s.top();
 		}
 		else {
-			while(s.size()>0 && v[s.top()]>v[i]){
+			while(s.size()>0 && v[s.top()]>=v[i]){
 				s.pop();
 			}
 			if(s.size()==0){
-				ans[i]=v.size()+1;
+				ans[i]=v.size();
 			}
 			else {
 				ans[i]= s.top();
@@ -170,7 +170,7 @@ int maximumAreaHistogram(vector<int> &v) {
 			ans[i]-= s.top();
 		}
 		else {
-			while(s.size()>0 && v[s.top()]>v[i]){
+			while(s.size()>0 && v[s.top()]>=v[i]){
 				s.pop();
 			}
 			if(s.size()==0){
@@ -180,8 +180,7 @@ int maximumAreaHistogram(vector<int> &v) {
 				ans[i]-= s.top();
 			}
 		}
-		ans[i]--;
-		ans[i]= ans[i]*v[i];
+		ans[i]= (ans[i]-1)*v[i];
 		res=max(res,ans[i]);
 		s.push(i);
 	}
@@ -352,6 +351,10 @@ int main(int argc, char const *argv[])
 	// vector<int> v= {6,2,5,4,5,1,6};
 
 	// cout<<maximumAreaHistogram(v);
+
+	vector<int> v={0,1,2,3,1,3};
+
+	cout<<maximumAreaHistogram(v);
 
 	// vector<int> v= {3,0,0,2,0,4};
 

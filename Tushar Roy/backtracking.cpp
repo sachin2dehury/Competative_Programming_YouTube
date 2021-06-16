@@ -80,7 +80,7 @@ int main(int argc, char const *argv[]) {
 
 	vector<vector<char>> v(4,vector<char> (4,'_'));
 
-	Nqueen(v,0,4);
+	Nqueen(v,0,v.size());
 
 	return 0;
 }
