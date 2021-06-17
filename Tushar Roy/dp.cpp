@@ -36,13 +36,6 @@ void longestIncreasingSubSequence(vector<int> &v) {
 	cout<<res;
 }
 
-// void optimalBinarySearchTree(vector<int> &v,vector<int> &f){
-// 	priority_queue<pair<int,int>> q;
-// 	for(int i=0;i<v.size();i++){
-// 		q.push({f[i],i});
-// 	}
-// }
-
 void maximumSumRectangle(vector<vector<int>> &v) {
 	vector<int> ans(v[0].size(),0);
 	int res =INT_MIN;
@@ -240,7 +233,32 @@ int minimumCostPath(vector<vector<int>> &v,int i,int j) {
 	}
 }
 
-// void textJustificationProblem(){
+
+int optimalBinarySearchTree(vector<int> &f,int i,int j,int h=1){
+	if(i>=j){
+		return 0;
+	} else {
+		int ans=INT_MAX;
+		for(int k=i;k<j;k++){
+			int temp = optimalBinarySearchTree(f,i,k,h+1)+
+				optimalBinarySearchTree(f,k+1,j,h+1)+ h*f[k];
+			ans=min(ans,temp);
+		}
+		return ans;
+	}
+}
+
+// int textJustificationProblem(vector<int> &v,int w,int i,int j){
+// 	if(i>=j) {
+// 		return 0;
+// 	} else {
+// 		int ans = INT_MAX;
+// 		for(int k=i;k<j;k++){
+// 			int temp1 = textJustificationProblem(v,w,i,k);
+// 			int temp2 =textJustificationProblem(v,w,k+1;j);
+// 			int temp = temp1 + temp2 +
+// 		}
+// 	}
 
 // }
 
@@ -248,9 +266,122 @@ int minimumCostPath(vector<vector<int>> &v,int i,int j) {
 
 // }
 
-void maximumSubSquareMatrix() {
-	
+void maximumSubSquareMatrix(vector<vector<int>> &v) {
+	vector<vector<int>> ans = v;
+	int res=0;
+	for(int i=1;i<v.size();i++){
+		for(int j=1;j<v[0].size();j++){
+			ans[i][j]+=min(ans[i-1][j-1],
+				min(ans[i-1][j],ans[i][j-1]));
+			res = max(ans[i][j],res);
+		}
+	}
+	cout<<res;
 }
+
+// void boxStacking(){
+
+// }
+
+// void ballonBurst() {
+
+// }
+
+int stairCase(int n) {
+	if(n<2){
+		return 1;
+	} else {
+		return stairCase(n-1)+stairCase(n-2);
+	}
+}
+ 
+void maximumSumIncreasingSubSequece(vector<int> &v) {
+	stack<int> s;
+	vector<int> ans(v.size());
+	vector<int> res(v.size(),1);
+	int c=0;
+	int k=0;
+	for(int i=v.size()-1;i>=0;i--){
+		if(s.size()==0){
+			ans[i]=v[i];
+		} else if(v[s.top()]>v[i]){
+			ans[i]=v[i]+ans[s.top()];
+			res[i]=res[s.top()]+1;
+		} else {
+			while(s.size()>0 && v[s.top()]<v[i]){
+				s.pop();
+			}
+			if(s.size()==0){
+				ans[i]=v[i];
+			} else {
+				ans[i]=v[i]+ans[s.top()];
+				res[i]=res[s.top()]+1;
+			}
+		}
+		s.push(i);
+		if(c<ans[i]){
+			c=ans[i];
+			k=res[i];
+		}
+	}
+	cout<<c<<' '<<k;
+}
+
+// void maximumSumNonAdjacent() {
+
+// }
+
+int interleavingString(string &a,string &b,string &c,int i,int j,int k) {
+	if(i==0 && j==0 && k==0) {
+		return 1;
+	} else if(c[k-1]==a[i-1] && c[k-1]==b[j-1]) {
+		return interleavingString(a,b,c,i-1,j,k-1) || 
+			interleavingString(a,b,c,i,j-1,k-1);
+	} else if(c[k-1]==a[i-1]){
+		return interleavingString(a,b,c,i-1,j,k-1);
+	} else if(c[k-1]==b[j-1]){
+		return interleavingString(a,b,c,i,j-1,k-1);
+	} else {
+		return 0;
+	}
+}
+
+int numberOfBST(int n) {
+	if(n<=1){
+		return 1;
+	} else {
+		int ans=0;
+		for(int k=0;k<n;k++){
+			ans+=numberOfBST(k)*numberOfBST(n-k-1);
+		}
+		return ans;
+	}
+}
+
+int totalWayInMatrix(int i,int j) {
+	if(i==1 || j==1){
+		return 1;
+	} else {
+		return totalWayInMatrix(i-1,j)+totalWayInMatrix(i,j-1);
+	}
+}
+
+// void longestBitonicSubSequence() {
+
+// }
+
+// void subRectangleSum() {
+
+// }
+
+// void numberWithOutConsecutiveOnes() {
+
+// }
+
+// void maximumSubSquareMatrixWithX() {
+
+// }
+
 
 int main(int argc, char const *argv[]) {
 
@@ -261,7 +392,7 @@ int main(int argc, char const *argv[]) {
 	// vector<int> v = {10,12,16,21};
 	// vector<int> f = {4,2,6,3};
 
-	// optimalBinarySearchTree(v,f);
+	// cout<<optimalBinarySearchTree(f,0,f.size());
 
 	// vector<vector<int>> v= {
 	// 	{2,1,-3,-4,5},
@@ -317,6 +448,31 @@ int main(int argc, char const *argv[]) {
 	// };
 
 	// cout<<minimumCostPath(v,v.size(),v[0].size());
+
+	// vector<vector<int>> v= {
+	// 	{0,0,1,1,1},
+	// 	{1,0,1,1,1},
+	// 	{0,1,1,1,1},
+	// 	{1,0,1,1,1},
+	// };
+
+	// maximumSubSquareMatrix(v);
+
+	// cout<<stairCase(5);
+
+	// vector<int> v={4,6,1,3,8,4,6};
+
+	// maximumSumIncreasingSubSequece(v);
+
+	// string a="aab";
+	// string b="axy";
+	// string c="aaxaby";
+
+	// cout<<interleavingString(a,b,c,a.size(),b.size(),c.size());
+
+	// cout<<numberOfBST(5);
+
+	cout<<totalWayInMatrix(4,4);
 
 	return 0;
 }
