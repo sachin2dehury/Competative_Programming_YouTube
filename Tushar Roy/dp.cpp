@@ -248,24 +248,6 @@ int optimalBinarySearchTree(vector<int> &f,int i,int j,int h=1){
 	}
 }
 
-// int textJustificationProblem(vector<int> &v,int w,int i,int j){
-// 	if(i>=j) {
-// 		return 0;
-// 	} else {
-// 		int ans = INT_MAX;
-// 		for(int k=i;k<j;k++){
-// 			int temp1 = textJustificationProblem(v,w,i,k);
-// 			int temp2 =textJustificationProblem(v,w,k+1;j);
-// 			int temp = temp1 + temp2 +
-// 		}
-// 	}
-
-// }
-
-// void optimalGamePattern() {
-
-// }
-
 void maximumSubSquareMatrix(vector<vector<int>> &v) {
 	vector<vector<int>> ans = v;
 	int res=0;
@@ -278,14 +260,6 @@ void maximumSubSquareMatrix(vector<vector<int>> &v) {
 	}
 	cout<<res;
 }
-
-// void boxStacking(){
-
-// }
-
-// void ballonBurst() {
-
-// }
 
 int stairCase(int n) {
 	if(n<2){
@@ -327,10 +301,6 @@ void maximumSumIncreasingSubSequece(vector<int> &v) {
 	cout<<c<<' '<<k;
 }
 
-// void maximumSumNonAdjacent() {
-
-// }
-
 int interleavingString(string &a,string &b,string &c,int i,int j,int k) {
 	if(i==0 && j==0 && k==0) {
 		return 1;
@@ -366,21 +336,145 @@ int totalWayInMatrix(int i,int j) {
 	}
 }
 
-// void longestBitonicSubSequence() {
+void longestBitonicSubSequence(vector<int> &v) {
+	vector<int> inc(v.size(),1);
+	vector<int> dec(v.size(),1);
+	int ans=0;
+	for(int i=1;i<v.size();i++){
+		int res=0;
+		for(int j=0;j<i;j++){
+			if(v[j]<v[i]){
+				res=max(res,inc[j]);
+			}
+		}
+		inc[i]+=res;
+	}
+	for(int i=v.size()-2;i>=0;i--){
+		int res=0;
+		for(int j=i+1;j<v.size();j++){
+			if(v[j]<v[i]){
+				res=max(res,dec[j]);
+			}
+		}
+		dec[i]+=res;
+	}
+	for(int i=0;i<v.size();i++){
+		inc[i]+=(dec[i]-1);
+		ans=max(inc[i],ans);
+	}
+	cout<<ans;
+}
 
-// }
+void subRectangleSum(vector<vector<int>> &v,int x,int y,int a,int b) {
+	vector<vector<int>> ans(v.size()+1,vector<int>(v[0].size()+1));
+	for(int i=0;i<=v.size();i++){
+		for(int j=0;j<=v[0].size();j++){
+			if(i==0 || j==0){
+				ans[i][j]=0;
+			} else {
+				ans[i][j]=ans[i-1][j]+ans[i][j-1]-ans[i-1][j-1]+v[i-1][j-1];
+			}
+			cout<<ans[i][j]<<' ';
+		}
+		cout<<endl;
+	}
+	cout<<ans[a][b]+ans[x][y]-ans[x][b]-ans[a][y];
+}
 
-// void subRectangleSum() {
+int numberWithOutConsecutiveOnes(int n) {
+	if(n==1){
+		return 2;
+	} else if(n==2) {
+		return 3;
+	} else {
+		return numberWithOutConsecutiveOnes(n-1)+
+			numberWithOutConsecutiveOnes(n-2);
+	}
+}
 
-// }
+vector<pair<pair<int,int>,int>> boxGenerator(vector<pair<pair<int,int>,int>> &a){
+	vector<pair<pair<int,int>,int>> v;
+	for(auto b: a){
+		if(b.first.first>b.first.second){
+			v.push_back(b);
+		}
+		if(b.first.first<b.first.second){
+			v.push_back({{b.first.second,b.first.first},b.second});
+		}
+		if(b.first.first > b.second) {
+			v.push_back({{b.first.first,b.second},b.first.second});
+		}
+		if(b.first.first < b.second) {
+			v.push_back({{b.second,b.first.first},b.first.second});
+		}
+		if(b.first.second > b.second) {
+			v.push_back({{b.first.second,b.second},b.first.first});
+		}
+		if(b.first.second < b.second) {
+			v.push_back({{b.second,b.first.second},b.first.first});
+		}
+	}
+	sort(v.begin(),v.end());
+	reverse(v.begin(),v.end());
+	return v;
+}
 
-// void numberWithOutConsecutiveOnes() {
+void boxStacking(vector<pair<pair<int,int>,int>> &v){
+	vector<pair<pair<int,int>,int>> b=boxGenerator(v);
+	vector<int> a(b.size());
+	a[0]=b[0].second;
+	int ans =0;
+	for(int i=1;i<a.size();i++){
+		if(b[i].first.first<b[i-1].first.first 
+			&& b[i].first.second<b[i-1].first.second){
+			a[i]=a[i-1]+b[i].second;
+		} else {
+			a[i]=b[i].second;
+			for(int j=i-2;j>=0;j--) {
+				if(b[i].first.first<b[j].first.first 
+			&& b[i].first.second<b[j].first.second) {
+					a[i]=max(a[i],b[i].second+b[j].second);
+				}
+			}
+		}
+		ans =max(ans,a[i]);
+	}
+	cout<<ans;
+}
+
+// void ballonBurst() {
 
 // }
 
 // void maximumSubSquareMatrixWithX() {
 
 // }
+
+// int textJustificationProblem(vector<int> &v,int w,int i,int op=0){
+// 	if(i==0){
+// 		return op;
+// 	} else {
+// 		int op1=op+pow(w-v[i-1],2);
+// 		if()
+// 		if()
+// 	}
+// }
+
+// void optimalGamePattern() {
+
+// }
+
+
+int maximumSumNonAdjacent(vector<int> &v,int i,int op=0,int f=0) {
+	if(i==0){
+		return op;
+	} else if(f==0){
+		return max(maximumSumNonAdjacent(v,i-1,op+v[i-1],1),
+			maximumSumNonAdjacent(v,i-1,op,0));
+	} else {
+		return maximumSumNonAdjacent(v,i-1,op,0);
+	}
+}
 
 
 int main(int argc, char const *argv[]) {
@@ -472,7 +566,33 @@ int main(int argc, char const *argv[]) {
 
 	// cout<<numberOfBST(5);
 
-	cout<<totalWayInMatrix(4,4);
+	// cout<<totalWayInMatrix(4,5);
+
+	// vector<vector<int>> v= {
+	// 	{2,0,-3,4},
+	// 	{6,3,2,-1},
+	// 	{5,4,7,3},
+	// 	{2,-6,8,1}
+	// };
+
+	// subRectangleSum(v,1,2,3,3);
+
+	// cout<<numberWithOutConsecutiveOnes(5);
+
+	// vector<int> v={2,-1,4,3,5,-1,3,2};
+
+	// longestBitonicSubSequence(v);
+
+	// vector<int> v = {4,1,1,4,2,1};
+
+	// cout<<maximumSumNonAdjacent(v,v.size());
+
+	vector<pair<pair<int,int>,int>> v={
+		{{1,2},4},
+		{{3,2},5}
+	};
+
+	boxStacking(v);
 
 	return 0;
 }
