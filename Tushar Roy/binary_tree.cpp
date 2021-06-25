@@ -97,9 +97,16 @@ int rootToLeafMaximumSum(node* root){
 	}
 }
 
-// int isBST(node* root,int parent=INT_MAX){
-
-// }
+int isBST(node* root,int l=INT_MIN,int r=INT_MAX){
+	if(root==nullptr){
+		return 1;
+	} else if(root->value < r && root->value >l){
+		return isBST(root->left,l,root->value) &&
+			isBST(root->right,root->value,r);
+	} else {
+		return 0;
+	}
+}
 
 void levelOrder(node* root){
 	if(root==nullptr){
@@ -283,13 +290,76 @@ void lowestCommonAncestorBST(node* root,int a,int b){
 	}
 }
 
+node* lowestCommonAncestor(node* root,int a,int b){
+	if(root==nullptr){
+		return nullptr;
+	} else if(root->value==a || root->value==b){
+		return root;
+	} else {
+		node* l=lowestCommonAncestor(root->left,a,b);
+		node* r=lowestCommonAncestor(root->right,a,b);
+		if(l && r){
+			return root;
+		} else if(l) {
+			return l;
+		} else {
+			return r;
+		}
+	}
+}
+
+
+// void postorderInterative2(node* root){
+// 	if(root==nullptr){
+// 		return;
+// 	}
+// 	stack<node*> s;
+// 	node* a = root;
+// 	while(a || s.size()) {
+// 		if(a==nullptr){
+// 			node* b=s.top()->right;
+// 			if(temp==nullptr){
+// 				temp=s.top();
+// 				cout<<temp->value<<' ';
+// 			}
+// 			while(s.size() && temp)
+			
+// 			s.push(a->right);
+// 		} else {
+// 			s.push(a);
+// 			a=a->left;
+// 		}
+// 	}
+// }
+
+// int largestBST(node* root){
+// 	if(root==nullptr){
+// 		return 0;
+// 	} else {
+// 		int l= largestBST(root->left);
+// 		int r= largestBST(root->right);
+// 		if(r==0 && l==0){
+// 			return 1;
+// 		} else if(l>0 && r>0){
+// 			return 1+l+r;
+// 		} else if(l && root->value > root->left->value){
+// 			return l;
+// 		} else if(r && root->value < root->right->value) {
+// 			return r;
+// 		} else {
+// 			return max(l,r);
+// 		}
+// 	}
+// }
+
+
 int main(int argc, char const *argv[]) {
 
-	node * root = new node(3);
-	root->left = new node(1);
-	root->right = new node(5);
-	root->left->right = new node(2);
-	root->right->left = new node(4);
+	// node * root = new node(3);
+	// root->left = new node(1);
+	// root->right = new node(5);
+	// root->left->right = new node(2);
+	// root->right->left = new node(4);
 
 	// preorder(root);
 	// cout<<endl;
@@ -311,12 +381,12 @@ int main(int argc, char const *argv[]) {
 
 	// cout<<heightOfBinaryTree(root);
 
-	// node * root = new node(10);
-	// root->left = new node(16);
-	// root->right = new node(5);
-	// root->left->right = new node(-3);
-	// root->right->left = new node(6);
-	// root->right->right = new node(11);
+	node * root = new node(10);
+	root->left = new node(16);
+	root->right = new node(5);
+	root->left->right = new node(-3);
+	root->right->left = new node(6);
+	root->right->right = new node(11);
 
 	// cout<<rootToLeafMaximumSum(root);
 
@@ -335,6 +405,12 @@ int main(int argc, char const *argv[]) {
 	// spiralTraversal(root);
 
 	// lowestCommonAncestorBST(root,1,2);
+
+	// cout<<isBST(root);
+
+	// cout<<lowestCommonAncestor(root,6,11)->value;
+
+	cout<<largestBST(root);
 
 	return 0;
 }
